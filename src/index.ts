@@ -24,8 +24,8 @@ async function getLevelSpells(page: Page) {
     return levelSpells;
 }
 
-async function getSpellsByClass(which: CharacterClass): Promise<SpellsByClass> {
-    const targetUrl = `http://dnd5e.wikidot.com/spells:${which}`;
+async function getSpellsByClass(): {
+    const targetUrl = 'http://dnd5e.wikidot.com/spells';
     const browser = await puppeteer.launch({
         headless: 'new',
     });
@@ -34,11 +34,11 @@ async function getSpellsByClass(which: CharacterClass): Promise<SpellsByClass> {
     const cantrips = await getSpellsByLevel(page, 0);
     const level = await getLevelSpells(page);
     await browser.close();
-    return { class: which, cantrips, level };
+    return { cantrips, level } as SpellsByClass;
 }
 
 async function main() {
-    const spells = await getSpellsByClass('warlock');
+    const spells = await getSpellsByClass();
     console.log(spells);
 }
 
